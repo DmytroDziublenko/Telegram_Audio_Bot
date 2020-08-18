@@ -3,6 +3,7 @@ try:
     from os import remove
     from pytube import YouTube
     from django.core.validators import URLValidator
+    from django.core.exceptions import ValidationError
 except Exception as importE:
     print("Some Modules are Missing {}".format(importE))
 
@@ -32,8 +33,11 @@ def send_audio(message):
         bot.send_audio(message.chat.id, audio)
         audio.close()
         remove(path)
-    except Exception as e:
-        bot.send_message(message.chat.id, "This is not a <b>url</b> or something else!\nTry again)", parse_mode='html')
+    except ValidationError as validationE:
+        bot.send_message(message.chat.id, "This is not a <b>url</b>!\nTry again)", parse_mode='html')
+    else:
+        audio.close()
+        remove(path)
 
 
 def download_audio(url, path):
