@@ -28,16 +28,11 @@ def welcome(message):
 def send_audio(message):
     try:
         validator(message.text)
-        print('done')
         path = 'audios/{}.mp4'.format(download_audio(message.text, 'audios/'))
         audio = open(path, 'rb')
-        print('done')
         bot.send_audio(message.chat.id, audio)
-        print('done')
         audio.close()
-        print('done')
         remove(path)
-        print('done')
     except ValidationError as validationE:
         bot.send_message(message.chat.id, "This is not a <b>url</b>!\nTry again)", parse_mode='html')
     else:
