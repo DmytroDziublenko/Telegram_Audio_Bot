@@ -1,10 +1,11 @@
 try:
     import telebot
     from os import remove
+    from time import sleep
     from pytube import YouTube
     from django.core.validators import URLValidator
-    from django.core.exceptions import ValidationError
     from requests.exceptions import ConnectionError
+    from django.core.exceptions import ValidationError
 except Exception as importE:
     print("Some Modules are Missing {}".format(importE))
 
@@ -34,11 +35,13 @@ def send_audio(message):
         bot.send_audio(message.chat.id, audio)
         audio.close()
         remove(path)
+        sleep(3)
     except ValidationError as validationE:
         bot.send_message(message.chat.id, "This is not a <b>url</b>!\nTry again)", parse_mode='html')
     except ConnectionError as connectionE:
         audio.close()
         remove(path)
+        sleep(3)
         bot.send_message(message.chat.id, "Connection Error!\nTry again")
 
 
