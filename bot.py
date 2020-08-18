@@ -1,5 +1,7 @@
 try:
     import telebot
+    from os import remove
+    from pytube import YouTube
 except Exception as importE:
     print("Some Modules are Missing {}".format(importE))
 
@@ -17,6 +19,35 @@ def welcome(message):
                      parse_mode='html')
     bot.send_sticker(message.chat.id, sticker)
     sticker.close()
+
+
+@bot.message_handler(content_types=['text'])
+def send_audio(message):
+    path = 'audios/{}.mp4'.format(download_audio(message.text, 'audios/'))
+    audio = open(path, 'rb')
+    bot.send_audio(message.chat.id, audio)
+    audio.close()
+    remove(path)
+
+
+def download_audio(url, path):
+    ytd = YouTube(url)
+    title = remove_bad_symbols(ytd.title.title())
+    ytd.streams.filter(only_audio=True).first().download(output_path=path, filename=title)
+    return title
+
+
+def remove_bad_symbols(st):
+    i = 0
+    tmp = ''
+    while i < len(st):
+        if st[i] == '\\' or st[i] == '/' or st[i] == '*' or st[i] == '?' or st[i] == '"' \
+                or st[i] == '<' or st[i] == '>' or st[i] == '|' or st[i] == '#':
+            tmp += ' '
+        else:
+            tmp += st[i]
+        i += 1
+    return tmp
 
 
 bot.polling(none_stop=True)
