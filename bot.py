@@ -42,7 +42,7 @@ def remove_bad_symbols(st):
     tmp = ''
     while i < len(st):
         if st[i] == '\\' or st[i] == '/' or st[i] == '*' or st[i] == '?' or st[i] == '"' \
-                or st[i] == '<' or st[i] == '>' or st[i] == '|' or st[i] == '#':
+                or st[i] == '<' or st[i] == '>' or st[i] == '|' or st[i] == '#' or st[i] == '.':
             tmp += ' '
         else:
             tmp += st[i]
