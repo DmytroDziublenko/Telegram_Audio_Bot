@@ -6,7 +6,7 @@ try:
 except Exception as importE:
     print("Some Modules are Missing {}".format(importE))
 
-TOKEN = '1372496285:AAFwXGNd1QbT9xWrOuIXSGLU11CywTlDzi0'
+TOKEN = 'TOKEN'
 
 bot = telebot.TeleBot(TOKEN)
 
