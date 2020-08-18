@@ -6,7 +6,7 @@ try:
 except Exception as importE:
     print("Some Modules are Missing {}".format(importE))
 
-TOKEN = '1372496285:AAFwXGNd1QbT9xWrOuIXSGLU11CywTlDzi0'
+TOKEN = 'TOKEN'
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -24,15 +24,11 @@ def welcome(message):
 
 @bot.message_handler(content_types=['text'])
 def send_audio(message):
-    try:
-        URLValidator(message.text)
-        path = 'audios/{}.mp4'.format(download_audio(message.text, 'audios/'))
-        audio = open(path, 'rb')
-        bot.send_audio(message.chat.id, audio)
-        audio.close()
-        remove(path)
-    except Exception as e:
-        bot.send_message(message.chat.id, "This is not a <b>url</b> or something else!\nTry again)", parse_mode='html')
+    path = 'audios/{}.mp4'.format(download_audio(message.text, 'audios/'))
+    audio = open(path, 'rb')
+    bot.send_audio(message.chat.id, audio)
+    audio.close()
+    remove(path)
 
 
 def download_audio(url, path):
