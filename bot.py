@@ -2,12 +2,14 @@ try:
     import telebot
     from os import remove
     from pytube import YouTube
+    from django.core.validators import URLValidator
 except Exception as importE:
     print("Some Modules are Missing {}".format(importE))
 
 TOKEN = 'TOKEN'
 
 bot = telebot.TeleBot(TOKEN)
+validator = URLValidator()
 
 
 @bot.message_handler(commands=['start'])
@@ -23,11 +25,15 @@ def welcome(message):
 
 @bot.message_handler(content_types=['text'])
 def send_audio(message):
-    path = 'audios/{}.mp4'.format(download_audio(message.text, 'audios/'))
-    audio = open(path, 'rb')
-    bot.send_audio(message.chat.id, audio)
-    audio.close()
-    remove(path)
+    try:
+        validator(message.text)
+        path = 'audios/{}.mp4'.format(download_audio(message.text, 'audios/'))
+        audio = open(path, 'rb')
+        bot.send_audio(message.chat.id, audio)
+        audio.close()
+        remove(path)
+    except Exception as e:
+        bot.send_message(message.chat.id, "This is not a <b>url</b> or something else!\nTry again)", parse_mode='html')
 
 
 def download_audio(url, path):
