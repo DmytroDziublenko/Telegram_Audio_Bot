@@ -9,7 +9,7 @@ try:
 except Exception as importE:
     print("Some Modules are Missing {}".format(importE))
 
-TOKEN = '1092394684:AAHeE5z6yqHo7pAn36Sn_K4sAzaEvqgsl88'
+TOKEN = 'TOKEN'
 
 bot = telebot.TeleBot(TOKEN)
 validator = URLValidator()
